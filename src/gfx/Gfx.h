@@ -20,10 +20,14 @@ public:
     Gfx() = default;
     ~Gfx() = default;
 
-    static SDL_Rect getTextureBounds(SDL_Texture& texture);
-    static SDL_FRect getTextureFBounds(SDL_Texture& texture);
+    static SDL_Texture* loadTexture(const uint8_t* data, const size_t size);
+    static SDL_Texture* createText(const uint8_t* data, const size_t size, const std::string& text, short textSize, const Color& color);
+
+    static SDL_Rect getTextureSize(SDL_Texture& texture);
+    static SDL_FRect getTextureFSize(SDL_Texture& texture);
     
     static void drawLine(const int x0, const int y0, const int x1, const int y1, const Color& color);
+
     static void drawCircle(const int centerX, const int centerY, const int radius, const Color& color);
     static void drawFillCircle(const int centerX, const int centerY, const int radius, const Color& color);
     static void drawDashedCircle(const int centerX, const int centerY, const int radius, const int dashLength, const Color& color);
@@ -32,4 +36,6 @@ public:
     static void drawBox(const SDL_FRect& rect, const Color& color);
     static void drawFillBox(const SDL_Rect& rect, const Color& color);
     static void drawFillBox(const SDL_FRect& rect, const Color& color);
+
+    static void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, const Color& color);
 };

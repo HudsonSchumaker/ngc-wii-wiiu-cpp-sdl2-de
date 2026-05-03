@@ -56,3 +56,7 @@ const Color Color::Silver = Color(192, 192, 192, 255);
 const Color Color::Gold = Color(255, 215, 0, 255);
 
 Color::Color(int r, int g, int b, int a) : r(r), g(g), b(b), a(a) {}
+
+SDL_Color Color::toSDLColor() const {
+    return SDL_Color{ static_cast<Uint8>(r), static_cast<Uint8>(g), static_cast<Uint8>(b), static_cast<Uint8>(a) };
+}

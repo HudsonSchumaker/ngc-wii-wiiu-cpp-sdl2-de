@@ -13,6 +13,7 @@
 class Color final {
 public:
     int r = 0, g = 0, b = 0, a = 0;
+
     static const Color Red;
     static const Color RedBrighter;
     static const Color RedBright;
@@ -62,4 +63,6 @@ public:
     Color() = default;
     Color(int r, int g, int b, int a);
     ~Color() = default;
+
+    SDL_Color toSDLColor() const;
 };

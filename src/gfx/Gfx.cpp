@@ -8,9 +8,32 @@
 * @copyright Copyright (c) 2024, Dodoi-Lab
 */
 #include "Gfx.h"
-#include "../Context.h"
+#include "../core/Context.h"
 
-SDL_Rect Gfx::getTextureBounds(SDL_Texture& texture) {
+SDL_Texture* Gfx::loadTexture(const uint8_t* data, const size_t size) {
+    SDL_Renderer* renderer = Context::getInstance()->getRenderer();
+
+    SDL_RWops* rw = SDL_RWFromMem((void*)data, size);
+    SDL_Texture* texture = IMG_LoadTexture_RW(renderer, rw, 1);
+    return texture;
+}
+
+SDL_Texture* Gfx::createText(const uint8_t* data, const size_t size, const std::string& text, short textSize, const Color& color) {
+    SDL_Renderer* renderer = Context::getInstance()->getRenderer();
+
+    SDL_RWops* rw = SDL_RWFromMem((void*)data, size);
+    TTF_Font* font = TTF_OpenFontRW(rw, 1, textSize);
+
+    SDL_Color sdlColor = color.toSDLColor();
+    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), sdlColor);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    SDL_FreeSurface(surface);
+    TTF_CloseFont(font);
+    return texture;
+}
+
+SDL_Rect Gfx::getTextureSize(SDL_Texture& texture) {
     SDL_Rect rect;
     rect.x = 0;
     rect.y = 0;
@@ -18,7 +41,7 @@ SDL_Rect Gfx::getTextureBounds(SDL_Texture& texture) {
     return rect;
 }
 
-SDL_FRect Gfx::getTextureFBounds(SDL_Texture& texture) {
+SDL_FRect Gfx::getTextureFSize(SDL_Texture& texture) {
     SDL_Rect rect;
     SDL_QueryTexture(&texture, NULL, NULL, &rect.w, &rect.h);
     SDL_FRect rectF = { 0.0f, 0.0f, static_cast<float>(rect.w), static_cast<float>(rect.h) };
@@ -27,18 +50,21 @@ SDL_FRect Gfx::getTextureFBounds(SDL_Texture& texture) {
 
 // Primitives
 void Gfx::drawLine(const int x0, const int y0, const int x1, const int y1, const Color& color) {
-    Uint8 r, g, b, a;
-    auto* renderer = Context::getInstance()->getRenderer();
-    SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+    SDL_Renderer* renderer = Context::getInstance()->getRenderer();
+
+    Uint8 prevR, prevG, prevB, prevA;
+    SDL_GetRenderDrawColor(renderer, &prevR, &prevG, &prevB, &prevA);
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     SDL_RenderDrawLine(renderer, x0, y0, x1, y1);
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+
+    SDL_SetRenderDrawColor(renderer, prevR, prevG, prevB, prevA);
 }
 
 void Gfx::drawCircle(const int centerX, const int centerY, const int radius, const Color& color) {
-    Uint8 r, g, b, a;
-    auto* renderer = Context::getInstance()->getRenderer();
-    SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+    SDL_Renderer* renderer = Context::getInstance()->getRenderer();
+
+    Uint8 prevR, prevG, prevB, prevA;
+    SDL_GetRenderDrawColor(renderer, &prevR, &prevG, &prevB, &prevA);
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
     // Draw
@@ -71,13 +97,14 @@ void Gfx::drawCircle(const int centerX, const int centerY, const int radius, con
         }
     }
 
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_SetRenderDrawColor(renderer, prevR, prevG, prevB, prevA);
 }
 
 void Gfx::drawFillCircle(const int centerX, const int centerY, const int radius, const Color& color) {
-    Uint8 r, g, b, a;
-    auto* renderer = Context::getInstance()->getRenderer();
-    SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+    SDL_Renderer* renderer = Context::getInstance()->getRenderer();
+
+    Uint8 prevR, prevG, prevB, prevA;
+    SDL_GetRenderDrawColor(renderer, &prevR, &prevG, &prevB, &prevA);
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
     // Draw
@@ -89,13 +116,14 @@ void Gfx::drawFillCircle(const int centerX, const int centerY, const int radius,
         }
     }
 
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_SetRenderDrawColor(renderer, prevR, prevG, prevB, prevA);
 }
 
 void Gfx::drawDashedCircle(const int centerX, const int centerY, const int radius, const int dashLength, const Color& color) {
-    Uint8 r, g, b, a;
-    auto* renderer = Context::getInstance()->getRenderer();
-    SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+    SDL_Renderer* renderer = Context::getInstance()->getRenderer();
+
+    Uint8 prevR, prevG, prevB, prevA;
+    SDL_GetRenderDrawColor(renderer, &prevR, &prevG, &prevB, &prevA);
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
     // Draw
@@ -117,7 +145,7 @@ void Gfx::drawDashedCircle(const int centerX, const int centerY, const int radiu
         }
     }
 
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_SetRenderDrawColor(renderer, prevR, prevG, prevB, prevA);
 }
 
 void Gfx::drawBox(const SDL_Rect& rect, const Color& color) {
@@ -153,11 +181,17 @@ void Gfx::drawFillBox(const float x, const float y, const float w, const float h
     SDL_Renderer* renderer = Context::getInstance()->getRenderer();
     // Save the current draw color
     Uint8 prevR, prevG, prevB, prevA;
-    SDL_GetRenderDrawColor(renderer, &prevR, &prevG, &prevB, &prevA);
+            SDL_GetRenderDrawColor(renderer, &prevR, &prevG, &prevB, &prevA);
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
     // Draw the filled rectangle
     SDL_FRect rect = { x, y, w, h };
     SDL_RenderFillRectF(renderer, &rect);
     // Restore the previous draw color
     SDL_SetRenderDrawColor(renderer, prevR, prevG, prevB, prevA);
+}
+
+void Gfx::drawTriangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3, const Color& color) {
+    drawLine(x1, y1, x2, y2, color);
+    drawLine(x2, y2, x3, y3, color);
+    drawLine(x3, y3, x1, y1, color);
 }
