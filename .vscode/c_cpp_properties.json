@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "NGC",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/build",
+                "C:/devkitPro/libogc/include",
+                "C:/devkitPro/portlibs/gamecube/include"
+            ],
+            "defines": [
+                "GEKKO"
+            ],
+            "compilerPath": "C:/devkitPro/devkitPPC/bin/powerpc-eabi-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}
