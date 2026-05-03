@@ -23,8 +23,8 @@ public:
     static SDL_Texture* loadTexture(const uint8_t* data, const size_t size);
     static SDL_Texture* createText(const uint8_t* data, const size_t size, const std::string& text, short textSize, const Color& color);
 
-    static SDL_Rect getTextureSize(SDL_Texture& texture);
-    static SDL_FRect getTextureFSize(SDL_Texture& texture);
+    static SDL_Rect getTextureSize(SDL_Texture* texture);
+    static SDL_FRect getTextureFSize(SDL_Texture* texture);
     
     static void drawLine(const int x0, const int y0, const int x1, const int y1, const Color& color);
 
