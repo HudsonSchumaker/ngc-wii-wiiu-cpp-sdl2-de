@@ -2,9 +2,9 @@
 *.d
 
 # Compiled Object files
-*.slo
-*.lo
 *.o
+*.lo
+*.slo
 *.obj
 *.map
 *.lst
@@ -23,9 +23,9 @@
 *.smod
 
 # Compiled Static libraries
-*.lai
-*.la
 *.a
+*.la
+*.lai
 *.lib
 
 # Executables
@@ -34,8 +34,8 @@
 *.app
 *.dol
 *.elf
-*.nacp
 *.nro
+*.nacp
 
 # MacOS
 .DS_Store
