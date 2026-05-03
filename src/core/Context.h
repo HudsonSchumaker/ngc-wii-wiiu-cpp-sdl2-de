@@ -1,18 +1,25 @@
 #pragma once
-#include "Pch.h"
+#include "../Pch.h"
 
 class Context final {
 private:
-    inline static Context* instance = nullptr;
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
+
+    bool sdlInitialized = false;
+    bool imageInitialized = false;
+    bool mixerInitialized = false;
+    bool ttfInitialized = false;
+    bool started = false;
+
     Context();
+    void shutdown();
 
 public:
     ~Context();
 
-    static Context* getInstance();
 	int start();
+    static Context& getInstance();
     SDL_Window* getWindow();
     SDL_Renderer* getRenderer();
 };

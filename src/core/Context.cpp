@@ -11,74 +11,65 @@
 
 Context::Context() {}
 
-Context* Context::getInstance() {
-	if (instance == nullptr) {
-		instance = new Context();
-	}
-	return instance;
+Context& Context::getInstance() {
+    static Context instance;
+    return instance;
 }
 
 Context::~Context() {
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	Mix_HaltChannel(-1);
-	Mix_CloseAudio();
-	Mix_Quit();
-	IMG_Quit();
-	TTF_Quit();
-	SDL_Quit();
+    shutdown();
 }
 
 int Context::start() {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0) {
-		return 1;
-	}
-	
-	window = SDL_CreateWindow(
+    if (started) {
+        return 0;
+    }
+
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0) {
+        return 1;
+    }
+    sdlInitialized = true;
+
+    window = SDL_CreateWindow(
         "dodoi-engine",
         SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED, 
+        SDL_WINDOWPOS_UNDEFINED,
         Def::SCREEN_WIDTH,
-        Def::SCREEN_HEIGHT, 
+        Def::SCREEN_HEIGHT,
         SDL_WINDOW_SHOWN
     );
 
     if (window == nullptr) {
-        SDL_Quit();
+        shutdown();
         return 1;
     }
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (renderer == nullptr) { 
-        SDL_DestroyWindow(window);
-		SDL_Quit();
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (renderer == nullptr) {
+        shutdown();
         return 1;
     }
 
-    if (!IMG_Init(IMG_INIT_PNG)) {
-		SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
+    if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG) {
+        shutdown();
         return 1;
     }
+    imageInitialized = true;
 
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-		Mix_Quit();
-        SDL_Quit();
+        shutdown();
         return 1;
     }
+    mixerInitialized = true;
 
-	if (TTF_Init() == -1) {
-		SDL_DestroyRenderer(renderer);
-		SDL_DestroyWindow(window);
-		Mix_Quit();
-		SDL_Quit();
+    if (TTF_Init() == -1) {
+        shutdown();
         return 1;
     }
-    
-	return 0;
+    ttfInitialized = true;
+
+    started = true;
+    return 0;
 }
 
 SDL_Window* Context::getWindow() {
@@ -87,4 +78,40 @@ SDL_Window* Context::getWindow() {
 
 SDL_Renderer* Context::getRenderer() {
 	return renderer;
+}
+
+void Context::shutdown() {
+    if (renderer != nullptr) {
+        SDL_DestroyRenderer(renderer);
+        renderer = nullptr;
+    }
+
+    if (window != nullptr) {
+        SDL_DestroyWindow(window);
+        window = nullptr;
+    }
+
+    if (mixerInitialized) {
+        Mix_HaltChannel(-1);
+        Mix_CloseAudio();
+        Mix_Quit();
+        mixerInitialized = false;
+    }
+
+    if (imageInitialized) {
+        IMG_Quit();
+        imageInitialized = false;
+    }
+
+    if (ttfInitialized) {
+        TTF_Quit();
+        ttfInitialized = false;
+    }
+
+    if (sdlInitialized) {
+        SDL_Quit();
+        sdlInitialized = false;
+    }
+
+    started = false;
 }
