@@ -1,0 +1,27 @@
+#pragma once
+#include "Widget.h"
+#include "../gfx/Color.h"
+
+class Label final : public Widget {
+private:
+    std::string text;
+    const uint8_t* fontData = nullptr;
+    size_t fontDataSize = 0;
+    short fontSize = 16;
+    Color color = Color::White;
+    SDL_Texture* texture = nullptr;
+
+    void rebuildTexture();
+
+public:
+    Label() = default;
+    Label(int x, int y);
+    ~Label() override;
+
+    void setText(const std::string& text);
+    void setColor(const Color& color);
+    void setFont(const uint8_t* fontData, size_t fontDataSize, short fontSize);
+
+    const std::string& getText() const;
+    void render() override;
+};
