@@ -16,22 +16,43 @@
 #include <limits>
 #include <vector>
 #include <random>
+#include <chrono>
+#include <future>
 #include <string>
+#include <thread>
 #include <variant>
 #include <utility>
 #include <fstream>
 #include <iostream>
+#include <typeindex>
 #include <algorithm>
 #include <filesystem>
 #include <functional>
 #include <unordered_map>
 #include <unordered_set>
 
+// Console-specific includes
 #include <gccore.h>
+
+// SDL2 includes
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
+
+// Navigation Definitions
+#define QUIT (-2)
+#define EXIT (-1)
+#define NADA 0
+#define NEXT 1
+#define BACK 2
+#define PLAY 3
+#define PAUSE 4
+#define RESUME 5
+#define RESTART 6
+#define CONTINUE 7
+#define GAME_OVER 8
+#define RELOAD 9
 
 class Def final {
 public:
