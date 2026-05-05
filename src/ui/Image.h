@@ -19,7 +19,7 @@ private:
 public:
     Image() = default;
     Image(int x, int y);
-    ~Image() override;
+    ~Image();
 
     void setSource(const uint8_t* data, size_t size);
     void setTint(const Color& color);
