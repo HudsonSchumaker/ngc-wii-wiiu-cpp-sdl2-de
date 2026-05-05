@@ -10,6 +10,7 @@
 #include "Engine.h"
 #include "core/Context.h"
 #include "core/SceneManager.h"
+#include "TitleScreen.h"
 #include "SplashScreen.h"
 
 Engine::~Engine() {
@@ -23,12 +24,13 @@ Engine& Engine::getInstance() {
 
 void Engine::start() {
     setup();
-    SceneManager::getInstance()->loadSceneAsync("SplashScreen");
+    SceneManager::getInstance()->loadSceneAsync("SplashScreen"); // Entry point
 }
 
 void Engine::setup() {
     Context::getInstance().start();
     SceneManager::getInstance()->addScene("SplashScreen", std::make_unique<SplashScreen>());
+    SceneManager::getInstance()->addScene("TitleScreen", std::make_unique<TitleScreen>());
 }
 
 void Engine::quit() {
