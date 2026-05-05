@@ -10,7 +10,6 @@
 #pragma once
 #include "Widget.h"
 
-
 class Button final : public Widget {
 private:
     u16 padButton = 0; 
