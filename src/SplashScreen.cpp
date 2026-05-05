@@ -40,10 +40,6 @@ void SplashScreen::input() {
 	SDL_Event sdlEvent;
 	while (SDL_PollEvent(&sdlEvent)) {
 		switch (sdlEvent.type) {
-		case SDL_QUIT:
-			isRunning = false;
-			exit = EXIT;
-			break;
 		}
 	}
 }
