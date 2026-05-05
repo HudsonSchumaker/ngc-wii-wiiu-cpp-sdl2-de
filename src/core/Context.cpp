@@ -56,7 +56,7 @@ int Context::start() {
     }
     imageInitialized = true;
 
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+    if (Mix_OpenAudio(32000, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
         shutdown();
         return 1;
     }
