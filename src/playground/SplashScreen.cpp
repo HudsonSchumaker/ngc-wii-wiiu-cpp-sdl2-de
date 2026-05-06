@@ -7,10 +7,10 @@
 * Dodoi-Engine is a game engine developed by Dodoi-Lab.
 * @copyright Copyright (c) 2024, Dodoi-Lab
 */
-#include "gfx/Gfx.h"
 #include "logo_png.h"
+#include "../gfx/Gfx.h"
 #include "SplashScreen.h"
-#include "core/Context.h"
+#include "../core/Context.h"
 
 SplashScreen::SplashScreen() : Scene() {}
 

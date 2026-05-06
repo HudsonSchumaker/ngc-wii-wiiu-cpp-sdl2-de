@@ -8,7 +8,7 @@
 * @copyright Copyright (c) 2024, Dodoi-Lab
 */
 #pragma once
-#include "core/Scene.h"
+#include "../core/Scene.h"
 
 class SplashScreen final : public Scene {
 private:
@@ -24,6 +24,5 @@ private:
 public:
 	SplashScreen();
 	~SplashScreen();
-
 	short run() override;
 };
