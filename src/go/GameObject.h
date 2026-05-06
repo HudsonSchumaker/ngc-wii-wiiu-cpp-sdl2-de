@@ -15,6 +15,7 @@ class GameObject {
 protected:
     bool active = true;
     float x = 0.0f, y = 0.0f, w = 0.0f, h = 0.0f;
+    short z = 0;
 
 public:
     GameObject(float x, float y, float w, float h) : x(x), y(y), w(w), h(h) {}
@@ -28,8 +29,10 @@ public:
     float getY() const { return y; }
     float getWidth() const { return w; }
     float getHeight() const { return h; }
+    short getZ() const { return z; }
     bool isActive() const { return active; }
     void setActive(bool isActive) { active = isActive; }
+    void setZ(short newZ) { z = newZ; } 
 
     void setPosition(float newX, float newY) {
         x = newX;
