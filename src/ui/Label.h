@@ -27,10 +27,13 @@ public:
     Label(int x, int y);
     ~Label() override;
 
+    void setOnCenter();
+    void setHorizontalCenter();
     void setText(const std::string& text);
     void setColor(const Color& color);
     void setFont(const uint8_t* fontData, size_t fontDataSize, short fontSize);
 
     const std::string& getText() const;
+    void update() override;
     void render() override;
 };

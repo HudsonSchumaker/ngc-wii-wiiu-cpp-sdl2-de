@@ -60,6 +60,10 @@ const std::string& Label::getText() const {
     return text;
 }
 
+void Label::update() {
+    // Labels are static, so no update logic is needed.
+}
+
 void Label::render() {
     if (!visible || texture == nullptr) {
         return;
@@ -68,3 +72,23 @@ void Label::render() {
     SDL_Rect bounds = getBounds();
     SDL_RenderCopy(Context::getInstance().getRenderer(), texture, nullptr, &bounds);
 }
+
+void Label::setOnCenter() {
+    if (texture == nullptr) {
+        return;
+    }
+
+    SDL_Rect size = Gfx::getTextureSize(texture);
+    x = (Def::SCREEN_WIDTH - size.w) / 2;
+    y = (Def::SCREEN_HEIGHT - size.h) / 2;
+}
+
+void Label::setHorizontalCenter() {
+    if (texture == nullptr) {
+        return;
+    }
+
+    SDL_Rect size = Gfx::getTextureSize(texture);
+    x = (Def::SCREEN_WIDTH - size.w) / 2;
+}
+
