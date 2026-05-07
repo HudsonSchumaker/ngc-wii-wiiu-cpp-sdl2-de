@@ -10,8 +10,9 @@
 #include "Engine.h"
 #include "core/Context.h"
 #include "core/SceneManager.h"
-#include "TitleScreen.h"
-#include "SplashScreen.h"
+#include "playground/MenuScreen.h"
+#include "playground/TitleScreen.h"
+#include "playground/SplashScreen.h"
 
 Engine::~Engine() {
     quit();
@@ -31,6 +32,7 @@ void Engine::setup() {
     Context::getInstance().start();
     SceneManager::getInstance()->addScene("SplashScreen", std::make_unique<SplashScreen>());
     SceneManager::getInstance()->addScene("TitleScreen", std::make_unique<TitleScreen>());
+    SceneManager::getInstance()->addScene("MenuScreen", std::make_unique<MenuScreen>());
 }
 
 void Engine::quit() {
