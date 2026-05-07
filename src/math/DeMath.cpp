@@ -10,9 +10,12 @@
 #include "DeMath.h"
 
 float DeMath::distanceBetweenPoints(const float x1, const float y1, const float x2, const float y2) {
-    return std::hypot(x2 - x1, y2 - y1);
+    float dx = x2 - x1;
+    float dy = y2 - y1;
+    float distSq = dx * dx + dy * dy;
+    return distSq * fastInvSqrt(distSq);
 }
-
+    
 float DeMath::normalizeAngle(const float angle) {
     auto resultAngle = std::remainder(angle, Def::TWO_PI);
     if (resultAngle < 0) {
@@ -53,4 +56,24 @@ float DeMath::easeOutCubic(const float t) {
     const float clampedT = DeMath::clamp01(t);
     const float inv = 1.0f - clampedT;
     return 1.0f - (inv * inv * inv);
+}
+
+float DeMath::fastInvSqrt(float number) {
+    union {
+        float f;
+        uint32_t i;
+    } conv;
+
+    conv.f = number;
+
+    const float x2 = number * 0.5f;
+    const float threehalfs = 1.5f;
+
+    conv.i = 0x5f3759df - (conv.i >> 1);
+
+    conv.f = conv.f * (
+        threehalfs - (x2 * conv.f * conv.f)
+    );
+
+    return conv.f;
 }

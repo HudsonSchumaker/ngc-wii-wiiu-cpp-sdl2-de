@@ -50,6 +50,7 @@ public:
 
     /**
      * @brief Generates a random float between min and max.
+     * 
      * @param min The minimum value.
      * @param max The maximum value.
      * 
@@ -82,4 +83,14 @@ public:
      * @return The eased out value.
      */
     static float easeOutCubic(const float t);
+
+    /**
+     * @brief Calculates the reciprocal square root of a number.
+     * 
+     * @param number The number.
+     * @return The reciprocal square root of the number.
+     */
+    static float fastInvSqrt(const float number);
+
+    
 };
