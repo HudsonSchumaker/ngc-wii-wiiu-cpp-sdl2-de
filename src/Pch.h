@@ -20,6 +20,7 @@
 #include <future>
 #include <string>
 #include <thread>
+#include <cstdint>
 #include <variant>
 #include <utility>
 #include <fstream>
