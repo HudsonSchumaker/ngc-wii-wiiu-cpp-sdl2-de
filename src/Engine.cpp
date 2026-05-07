@@ -25,14 +25,14 @@ Engine& Engine::getInstance() {
 
 void Engine::start() {
     setup();
-    SceneManager::getInstance()->loadSceneAsync("SplashScreen"); // Entry point
+    SceneManager::getInstance().loadSceneAsync("SplashScreen"); // Entry point
 }
 
 void Engine::setup() {
     Context::getInstance().start();
-    SceneManager::getInstance()->addScene("SplashScreen", std::make_unique<SplashScreen>());
-    SceneManager::getInstance()->addScene("TitleScreen", std::make_unique<TitleScreen>());
-    SceneManager::getInstance()->addScene("MenuScreen", std::make_unique<MenuScreen>());
+    SceneManager::getInstance().addScene("SplashScreen", std::make_unique<SplashScreen>());
+    SceneManager::getInstance().addScene("TitleScreen", std::make_unique<TitleScreen>());
+    SceneManager::getInstance().addScene("MenuScreen", std::make_unique<MenuScreen>());
 }
 
 void Engine::quit() {
