@@ -13,7 +13,6 @@
 
 class SceneManager final {
 private:
-    inline static SceneManager* instance = nullptr;
 
     /**
     * @brief Map of scene names to unique pointers of Scene objects.
@@ -29,9 +28,9 @@ public:
 
     /**
     * @brief Returns the singleton instance of SceneManager.
-    * @return SceneManager* The singleton instance of SceneManager.
+    * @return SceneManager& The singleton instance of SceneManager.
     */
-    static SceneManager* getInstance();
+    static SceneManager& getInstance();
 
     /**
     * @brief Adds a scene to the SceneManager.

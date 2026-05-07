@@ -10,10 +10,8 @@
 #include "Context.h"
 #include "SceneManager.h"
 
-SceneManager* SceneManager::getInstance() {
-    if (instance == nullptr) {
-        instance = new SceneManager();
-    }
+SceneManager& SceneManager::getInstance() {
+    static SceneManager instance;
     return instance;
 }
 
