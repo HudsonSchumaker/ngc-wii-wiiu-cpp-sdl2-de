@@ -30,7 +30,7 @@ INCLUDES	:=
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
-CFLAGS	 = `$(PREFIX)pkg-config --cflags sdl2 SDL2_ttf SDL2_gfx SDL2_mixer SDL2_image freetype2` -g -O2 -Wall $(MACHDEP) $(INCLUDE) -DGAMECUBE -DCONSOLE
+CFLAGS	 = `$(PREFIX)pkg-config --cflags sdl2 SDL2_ttf SDL2_gfx SDL2_mixer SDL2_image freetype2` -ffast-math -g -O2 -Wall $(MACHDEP) $(INCLUDE) -DGAMECUBE -DCONSOLE
 CXXFLAGS =	$(CFLAGS)
 LDFLAGS	 = -g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
